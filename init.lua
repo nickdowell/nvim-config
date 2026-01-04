@@ -1,3 +1,5 @@
+vim.cmd.colorscheme 'catppuccin-mocha'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
