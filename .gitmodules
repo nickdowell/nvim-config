@@ -1,0 +1,12 @@
+[submodule "pack/nvim/start/nvim-lspconfig"]
+	path = pack/nvim/start/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig
+[submodule "pack/nvim/start/nvim-treesitter"]
+	path = pack/nvim/start/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter.git
+[submodule "pack/nvim/start/plenary.vim"]
+	path = pack/nvim/start/plenary.vim
+	url = https://github.com/nvim-lua/plenary.nvim
+[submodule "pack/nvim/start/telescope.vim"]
+	path = pack/nvim/start/telescope.vim
+	url = https://github.com/nvim-telescope/telescope.nvim
