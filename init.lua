@@ -40,7 +40,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 require('telescope').setup({ defaults = { layout_strategy = 'vertical' } })
 local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = 'Telescope resume' })
+vim.keymap.set('n', '<leader>fs', builtin.grep_string, { desc = 'Telescope grep string' })
+
+-- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
+
+-- Use <Esc> to exit terminal mode
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+
+-- Grep for string under cursor
+vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
