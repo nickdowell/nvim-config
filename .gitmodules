@@ -1,6 +1,9 @@
 [submodule "pack/nvim/start/catppuccin"]
 	path = pack/nvim/start/catppuccin
 	url = https://github.com/catppuccin/nvim.git
+[submodule "pack/nvim/start/fugitive"]
+	path = pack/nvim/start/fugitive
+	url = https://tpope.io/vim/fugitive.git
 [submodule "pack/nvim/start/nvim-lspconfig"]
 	path = pack/nvim/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
