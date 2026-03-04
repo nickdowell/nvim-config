@@ -59,3 +59,5 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 -- Grep for string under cursor
 vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
+
+-- vim: expandtab softtabstop=2 shiftwidth=2 tabstop=2
