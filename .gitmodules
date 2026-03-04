@@ -7,6 +7,9 @@
 [submodule "pack/nvim/start/nvim-lspconfig"]
 	path = pack/nvim/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
+[submodule "pack/nvim/start/nvim-navic"]
+	path = pack/nvim/start/nvim-navic
+	url = https://github.com/SmiteshP/nvim-navic
 [submodule "pack/nvim/start/nvim-treesitter"]
 	path = pack/nvim/start/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter.git

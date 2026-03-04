@@ -35,6 +35,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
       local win = vim.api.nvim_get_current_win()
       vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
     end
+    if client:supports_method('textDocument/documentSymbols') then
+      require('nvim-navic').attach(client, ev.buf)
+      local win = vim.api.nvim_get_current_win()
+      vim.wo[win][0].statusline = "%<%f %h%w%m%r %{%v:lua.require'nvim-navic'.get_location()%}%=%-14.(%l,%c%V%) %P"
+    end
   end,
 })
 
