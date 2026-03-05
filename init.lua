@@ -63,7 +63,7 @@ vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
 function StatusLine()
   local location = require('nvim-navic').get_location()
   if location ~= '' then location = ' > ' .. location end
-  return '%<%f%( %h%w%m%r%)' .. location .. '%= ' .. vim.bo.filetype .. ' ' .. vim.bo.fileencoding .. ' ' .. vim.bo.fileformat .. '  %-14.(%l,%c%V%) %P'
+  return '%<%f%( %h%w%m%r%)' .. location .. '%= %{&filetype} %{&fileencoding} %{&fileformat} · %-14.(%l,%c%V%) %P'
 end
 
 -- vim: expandtab softtabstop=2 shiftwidth=2 tabstop=2
