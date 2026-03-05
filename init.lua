@@ -13,6 +13,7 @@ vim.o.list = true
 vim.o.number = true
 vim.o.scrolloff = 10
 vim.o.signcolumn = 'yes'
+vim.o.statusline = '%!v:lua.StatusLine()'
 vim.o.swapfile = false
 vim.o.winborder = 'rounded'
 
@@ -37,8 +38,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     if client:supports_method('textDocument/documentSymbols') then
       require('nvim-navic').attach(client, ev.buf)
-      local win = vim.api.nvim_get_current_win()
-      vim.wo[win][0].statusline = "%<%f %h%w%m%r %{%v:lua.require'nvim-navic'.get_location()%}%=%-14.(%l,%c%V%) %P"
     end
   end,
 })
@@ -59,5 +58,12 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 -- Grep for string under cursor
 vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
+
+-- statusline
+function StatusLine()
+  local location = require('nvim-navic').get_location()
+  if location ~= '' then location = ' > ' .. location end
+  return '%<%f%( %h%w%m%r%)' .. location .. '%= ' .. vim.bo.filetype .. ' ' .. vim.bo.fileencoding .. ' ' .. vim.bo.fileformat .. '  %-14.(%l,%c%V%) %P'
+end
 
 -- vim: expandtab softtabstop=2 shiftwidth=2 tabstop=2
