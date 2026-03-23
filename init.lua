@@ -51,6 +51,14 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help ta
 vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = 'Telescope resume' })
 vim.keymap.set('n', '<leader>fs', builtin.grep_string, { desc = 'Telescope grep string' })
 
+local gitsigns = require('gitsigns')
+gitsigns.setup({
+  on_attach = function()
+    vim.keymap.set('n', ']c', function() if vim.wo.diff then vim.cmd.normal({']c', bang = true}) else gitsigns.nav_hunk('next') end end)
+    vim.keymap.set('n', '[c', function() if vim.wo.diff then vim.cmd.normal({'[c', bang = true}) else gitsigns.nav_hunk('prev') end end)
+  end
+})
+
 -- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
 -- Use <Esc> to exit terminal mode
