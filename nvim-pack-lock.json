@@ -27,6 +27,11 @@
     "telescope.nvim": {
       "rev": "7ef4d6dccb78ee71e552bbd866176762ad328afa",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
+    },
+    "vim-solarized8": {
+      "rev": "1d05915cc9050ce1a8a6b94d8c2e48ead197c756",
+      "src": "https://codeberg.org/lifepillar/vim-solarized8",
+      "version": "'neovim'"
     }
   }
 }

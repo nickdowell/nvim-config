@@ -6,7 +6,10 @@ vim.pack.add({
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://tpope.io/vim/fugitive',
+  { src = 'https://codeberg.org/lifepillar/vim-solarized8', version = 'neovim' },
 })
+
+vim.cmd('colorscheme solarized8_high')
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
