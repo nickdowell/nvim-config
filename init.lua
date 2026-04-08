@@ -1,3 +1,13 @@
+vim.pack.add({
+  'https://github.com/SmiteshP/nvim-navic',
+  'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/nvim-telescope/telescope.nvim',
+  'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://tpope.io/vim/fugitive',
+})
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
