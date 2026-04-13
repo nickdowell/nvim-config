@@ -75,6 +75,9 @@ vim.opt.completeopt = { "menu", "popup", "longest" } -- += longest
 -- The "virtual_text" handler is disabled by default. Enable with
 vim.diagnostic.config({ virtual_text = true })
 
+-- Work around broken editsNearCursor in 0.12 - https://github.com/neovim/neovim/issues/39001
+vim.lsp.config('clangd', { capabilities = { textDocument = { completion = { editsNearCursor = false } } } })
+
 vim.lsp.enable('clangd')
 
 vim.api.nvim_create_autocmd('LspAttach', {
