@@ -1,15 +1,15 @@
 vim.pack.add({
-  'https://github.com/SmiteshP/nvim-navic',
+  'https://github.com/folke/tokyonight.nvim',
+  'https://github.com/folke/which-key.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
-  'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://github.com/nvim-treesitter/nvim-treesitter-context',
   'https://tpope.io/vim/fugitive',
-  { src = 'https://codeberg.org/lifepillar/vim-solarized8', version = 'neovim' },
 })
 
-vim.cmd('colorscheme solarized8_high')
+vim.cmd('colorscheme tokyonight-night')
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -24,15 +24,7 @@ vim.g.mapleader = ' '
 
 -- Print the line number in front of each line
 vim.o.number = true
-
--- Sync clipboard between OS and Neovim. Schedule the setting after `UiEnter` because it can
--- increase startup-time. Remove this option if you want your OS clipboard to remain independent.
--- See `:help 'clipboard'`
-vim.api.nvim_create_autocmd('UIEnter', {
-  callback = function()
-    vim.o.clipboard = 'unnamedplus'
-  end,
-})
+vim.o.relativenumber = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 -- vim.o.ignorecase = true
@@ -63,20 +55,22 @@ vim.o.confirm = true
 -- vim.o.jumpoptions = 'view'
 
 vim.o.signcolumn = 'yes'
-vim.o.statusline = '%!v:lua.StatusLine()'
 vim.o.swapfile = false
 
 -- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
-vim.opt.completeopt = { "menu", "popup", "longest" } -- += longest
-
--- prevent colorscheme from setting bg color
--- vim.cmd(':highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE')
+vim.o.completeopt = 'menuone,noselect,popup'
+vim.o.pummaxwidth = 40
 
 -- The "virtual_text" handler is disabled by default. Enable with
 vim.diagnostic.config({ virtual_text = true })
 
--- Work around broken editsNearCursor in 0.12 - https://github.com/neovim/neovim/issues/39001
-vim.lsp.config('clangd', { capabilities = { textDocument = { completion = { editsNearCursor = false } } } })
+-- Treesitter (note: install new parsers using tree-sitter cli)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp', 'lua' },
+  callback = function(ev)
+    pcall(vim.treesitter.start, ev.buf)
+  end
+})
 
 vim.lsp.enable('clangd')
 
@@ -84,16 +78,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.keymap.set("i", "<C-space>", vim.lsp.completion.get, { desc = "trigger autocompletion" })
+      vim.bo.autocomplete = true
+      vim.bo.complete = 'o'
     end
     if client:supports_method('textDocument/foldingRange') then
       vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
     end
   end,
 })
-
-require('nvim-navic').setup({ lsp = { auto_attach = true } })
 
 require('telescope').setup({
   defaults = { layout_strategy = 'vertical' },
@@ -113,6 +105,8 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live gr
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = 'Telescope resume' })
 vim.keymap.set('n', '<leader>fs', builtin.grep_string, { desc = 'Telescope grep string' })
+
+require('treesitter-context').setup()
 
 local gitsigns = require('gitsigns')
 gitsigns.setup({
@@ -137,6 +131,14 @@ vim.keymap.set({ 'n' }, '<A-j>', '<C-w>j')
 vim.keymap.set({ 'n' }, '<A-k>', '<C-w>k')
 vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
 
+-- From ThePrimeagen
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+
+-- Copy / paste from system keyboard
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
+
 -- Grep for string under cursor
 vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
 
@@ -149,7 +151,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   callback = function()
     vim.hl.on_yank()
-  end,
+  end
 })
 
 -- [[ Create user commands ]]
@@ -162,6 +164,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --   print(vim.fn.system({ 'git', 'blame', '-L', line_number .. ',+1', filename }))
 -- end, { desc = 'Print the git blame for the current line' })
 
+vim.api.nvim_create_user_command('TransparentBG', function()
+  vim.cmd(':highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE')
+end, {})
+
 -- [[ Add optional packages ]]
 -- Nvim comes bundled with a set of packages that are not enabled by
 -- default. You can enable any of them by using the `:packadd` command.
@@ -172,12 +178,5 @@ vim.cmd('packadd! nohlsearch')
 
 -- The "cfilter" package allows filtering the quickfix list using :Cfilter and :Lfilter
 vim.cmd('packadd! cfilter')
-
--- statusline
-function StatusLine()
-  local location = require('nvim-navic').get_location()
-  if location ~= '' then location = ' > ' .. location end
-  return '%<%f%( %h%w%m%r%)' .. location .. '%= %{&filetype} %{&fileencoding} %{&fileformat} · %-14.(%l,%c%V%) %P'
-end
 
 -- vim: expandtab softtabstop=2 shiftwidth=2 tabstop=2
