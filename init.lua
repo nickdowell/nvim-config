@@ -41,7 +41,7 @@ vim.o.scrolloff = 10
 
 -- Show <tab> and trailing spaces
 vim.o.list = true
-vim.o.listchars = 'tab:» ,trail:·,nbsp:+,lead:·'
+vim.o.listchars = 'tab:» ,trail:·,nbsp:␣,lead:·'
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s) See `:help 'confirm'`
@@ -57,6 +57,10 @@ vim.o.confirm = true
 vim.o.signcolumn = 'yes'
 vim.o.swapfile = false
 
+-- Configure how new splits should be opened
+vim.o.splitright = true
+vim.o.splitbelow = true
+
 -- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
 vim.o.completeopt = 'menuone,noselect,popup'
 vim.o.pummaxwidth = 40
@@ -66,9 +70,11 @@ vim.diagnostic.config({ virtual_text = true })
 
 -- Treesitter (note: install new parsers using tree-sitter cli)
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'cpp', 'lua' },
   callback = function(ev)
-    pcall(vim.treesitter.start, ev.buf)
+    local language = vim.treesitter.language.get_lang(ev.match)
+    if vim.treesitter.language.add(language) then 
+      vim.treesitter.start(ev.buf, language)
+    end
   end
 })
 
@@ -121,15 +127,20 @@ gitsigns.setup({
 -- Use <Esc> to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
--- Map <A-j>, <A-k>, <A-h>, <A-l> to navigate between windows in any modes
-vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
-vim.keymap.set({ 't', 'i' }, '<A-j>', '<C-\\><C-n><C-w>j')
-vim.keymap.set({ 't', 'i' }, '<A-k>', '<C-\\><C-n><C-w>k')
-vim.keymap.set({ 't', 'i' }, '<A-l>', '<C-\\><C-n><C-w>l')
-vim.keymap.set({ 'n' }, '<A-h>', '<C-w>h')
-vim.keymap.set({ 'n' }, '<A-j>', '<C-w>j')
-vim.keymap.set({ 'n' }, '<A-k>', '<C-w>k')
-vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
+-- TIP: Disable arrow keys in normal mode
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+-- Keybinds to make split navigation easier.
+--  Use CTRL+<hjkl> to switch between windows
+--
+--  See `:help wincmd` for a list of all window commands
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- From ThePrimeagen
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -149,9 +160,7 @@ vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
 -- Try it with `yap` in normal mode. See `:h vim.hl.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  callback = function()
-    vim.hl.on_yank()
-  end
+  callback = function() vim.hl.on_yank() end
 })
 
 -- [[ Create user commands ]]
