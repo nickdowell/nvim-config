@@ -1,5 +1,4 @@
 vim.pack.add({
-  'https://github.com/folke/tokyonight.nvim',
   'https://github.com/folke/which-key.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/neovim/nvim-lspconfig',
@@ -9,7 +8,7 @@ vim.pack.add({
   'https://tpope.io/vim/fugitive',
 })
 
-vim.cmd('colorscheme tokyonight-night')
+vim.cmd('colorscheme catppuccin') -- catppuccin was added to vnim 0.12!
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
