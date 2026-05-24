@@ -1,3 +1,4 @@
+-- Plug-ins {{{
 vim.pack.add({
   'https://github.com/folke/which-key.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
@@ -7,9 +8,13 @@ vim.pack.add({
   'https://github.com/nvim-treesitter/nvim-treesitter-context',
   'https://tpope.io/vim/fugitive',
 })
+-- }}}
 
+-- Colorscheme {{{
 vim.cmd('colorscheme catppuccin') -- catppuccin was added to vnim 0.12!
+-- }}}
 
+-- Configuration {{{
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -64,7 +69,9 @@ vim.o.splitbelow = true
 vim.o.completeopt = 'menuone,noselect,popup'
 vim.o.pummaxwidth = 40
 
--- Diagnostic Config & Keymaps
+-- }}}
+
+-- Diagnostic Config & Keymaps {{{
 --  See `:help vim.diagnostic.Opts`
 vim.diagnostic.config {
   update_in_insert = false,
@@ -89,32 +96,43 @@ vim.diagnostic.config {
 }
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- }}}
 
--- Treesitter (note: install new parsers using tree-sitter cli)
+-- Treesitter (note: install new parsers using tree-sitter cli) {{{
 vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
     local language = vim.treesitter.language.get_lang(ev.match)
     if vim.treesitter.language.add(language) then 
       vim.treesitter.start(ev.buf, language)
+      -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      -- vim.wo.foldmethod = 'expr'
     end
   end
 })
 
+require('treesitter-context').setup()
+-- }}}
+
+-- LSP {{{
 vim.lsp.enable('clangd')
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client:supports_method('textDocument/completion') then
-      vim.bo.autocomplete = true
-      vim.bo.complete = 'o'
+      -- vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
+      -- vim.keymap.set('i', '<c-space>', function() vim.lsp.completion.get() end)
+      -- vim.bo.autocomplete = true
+      -- vim.bo.complete = 'o'
     end
-    if client:supports_method('textDocument/foldingRange') then
-      vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
-    end
+    -- if client:supports_method('textDocument/foldingRange') then
+    --   vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+    -- end
   end,
 })
+-- }}}
 
+-- Telescope {{{
 require('telescope').setup({
   defaults = { layout_strategy = 'vertical' },
   pickers = { 
@@ -197,9 +215,9 @@ vim.keymap.set(
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+-- }}}
 
-require('treesitter-context').setup()
-
+-- Gitsigns {{{
 local gitsigns = require('gitsigns')
 gitsigns.setup({
   on_attach = function()
@@ -207,8 +225,9 @@ gitsigns.setup({
     vim.keymap.set('n', '[c', function() if vim.wo.diff then vim.cmd.normal({'[c', bang = true}) else gitsigns.nav_hunk('prev') end end)
   end
 })
+-- }}}
 
--- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
+-- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes` {{{
 
 -- Allow entering these keys when using Ghostty with macos-option-as-alt = true
 if vim.env.TERM == 'xterm-ghostty' and vim.fn.has('maxunix') then
@@ -245,7 +264,9 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 -- Grep for string under cursor
 vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
 
--- [[ Basic Autocommands ]].
+-- }}}
+
+-- [[ Basic Autocommands ]] {{{
 -- See `:h lua-guide-autocommands`, `:h autocmd`, `:h nvim_create_autocmd()`
 
 -- Highlight when yanking (copying) text.
@@ -254,8 +275,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   callback = function() vim.hl.on_yank() end
 })
+-- }}}
 
--- [[ Create user commands ]]
+-- [[ Create user commands ]] {{{
 -- See `:h nvim_create_user_command()` and `:h user-commands`
 
 -- Create a command `:GitBlameLine` that print the git blame for the current line
@@ -268,8 +290,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_user_command('TransparentBG', function()
   vim.cmd(':highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE')
 end, {})
+-- }}}
 
--- [[ Add optional packages ]]
+-- [[ Add optional packages ]] {{{
 -- Nvim comes bundled with a set of packages that are not enabled by
 -- default. You can enable any of them by using the `:packadd` command.
 
@@ -280,4 +303,6 @@ vim.cmd('packadd! nohlsearch')
 -- The "cfilter" package allows filtering the quickfix list using :Cfilter and :Lfilter
 vim.cmd('packadd! cfilter')
 
--- vim: expandtab softtabstop=2 shiftwidth=2 tabstop=2
+-- }}}
+
+-- vim: foldmethod=marker expandtab softtabstop=2 shiftwidth=2 tabstop=2
