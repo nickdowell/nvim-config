@@ -99,18 +99,20 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- }}}
 
 -- Treesitter (note: install new parsers using tree-sitter cli) {{{
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function(ev)
-    local language = vim.treesitter.language.get_lang(ev.match)
-    if vim.treesitter.language.add(language) then 
-      vim.treesitter.start(ev.buf, language)
-      -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-      -- vim.wo.foldmethod = 'expr'
-    end
-  end
-})
-
+-- Neovim doesn't come with treesitter queries required for syntax highlighting
+vim.pack.add({'https://github.com/arborist-ts/arborist.nvim'})
+require("arborist").setup()
 require('treesitter-context').setup()
+
+-- vim.api.nvim_create_autocmd('FileType', {
+--   callback = function(ev)
+--     local language = vim.treesitter.language.get_lang(ev.match)
+--     if vim.treesitter.language.add(language) then 
+--       -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+--       -- vim.wo.foldmethod = 'expr'
+--     end
+--   end
+-- })
 -- }}}
 
 -- LSP {{{
