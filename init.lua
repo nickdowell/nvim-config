@@ -311,6 +311,10 @@ vim.cmd('packadd! nohlsearch')
 -- The "cfilter" package allows filtering the quickfix list using :Cfilter and :Lfilter
 vim.cmd('packadd! cfilter')
 
+vim.cmd('packadd! nvim.difftool')
+
+vim.cmd('packadd! nvim.undotree')
+
 -- }}}
 
 -- vim: foldmethod=marker expandtab softtabstop=2 shiftwidth=2 tabstop=2
