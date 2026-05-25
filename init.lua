@@ -65,10 +65,6 @@ vim.o.swapfile = false
 vim.o.splitright = true
 vim.o.splitbelow = true
 
--- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
-vim.o.completeopt = 'menuone,noselect,popup'
-vim.o.pummaxwidth = 40
-
 -- }}}
 
 -- Diagnostic Config & Keymaps {{{
@@ -129,14 +125,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client:supports_method('textDocument/completion') then
-      -- vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
-      -- vim.keymap.set('i', '<c-space>', function() vim.lsp.completion.get() end)
-      -- vim.bo.autocomplete = true
-      -- vim.bo.complete = 'o'
+      vim.o.completeopt = 'menu,popup,noselect' -- autocomplete is annoying without noselect
+      if true then -- use LSP-driven autocomplete, based on server-defined triggerCharacters
+        vim.lsp.completion.enable(true, client.id, ev.buf, {autotrigger = true})
+        vim.keymap.set('i', '<c-space>', function() vim.lsp.completion.get() end)
+      else -- use built-in autocomplete added in 0.12
+        vim.bo.autocomplete = true
+        vim.bo.complete = 'o,' .. vim.bo.complete
+      end
     end
-    -- if client:supports_method('textDocument/foldingRange') then
-    --   vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
-    -- end
+    if client:supports_method('textDocument/foldingRange') then
+      -- vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+    end
   end,
 })
 -- }}}
