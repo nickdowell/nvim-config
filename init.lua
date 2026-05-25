@@ -146,7 +146,9 @@ require('telescope').setup({
       enable_preview = true,
       previewer = false,
       theme = 'dropdown'
-    }
+    },
+    lsp_document_symbols = {symbol_width = 50},
+    lsp_dynamic_workspace_symbols = {symbol_width = 50},
   }
 })
 local builtin = require('telescope.builtin')
