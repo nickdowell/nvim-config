@@ -40,9 +40,6 @@ vim.o.cursorline = true
 -- Apply theme colors to the terminal's cursor
 vim.o.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
 
--- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 10
-
 -- Show <tab> and trailing spaces
 vim.o.list = true
 vim.o.listchars = 'tab:» ,trail:·,nbsp:␣,lead:·'
