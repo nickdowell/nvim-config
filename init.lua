@@ -98,12 +98,19 @@ vim.diagnostic.config {
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- }}}
 
--- Treesitter (note: install new parsers using tree-sitter cli) {{{
--- Neovim doesn't come with treesitter queries required for syntax highlighting
+-- Treesitter {{{
+-- Arborist installs treesitter queries so that TS syntax higlighting works
+-- It also installs new parsers on demand when opening files
 vim.pack.add({'https://github.com/arborist-ts/arborist.nvim'})
-require("arborist").setup()
+require("arborist").setup({
+  install_popular = false,
+  prefer_wasm = false,
+  update_cadence = 'manual'
+})
+
 require('treesitter-context').setup()
 
+-- If not using Arborist, something like this would be needed:
 -- vim.api.nvim_create_autocmd('FileType', {
 --   callback = function(ev)
 --     local language = vim.treesitter.language.get_lang(ev.match)
