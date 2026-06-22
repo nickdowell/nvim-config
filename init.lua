@@ -120,6 +120,9 @@ require('treesitter-context').setup()
 -- }}}
 
 -- LSP {{{
+-- editsNearCursor = false to prevent completion clobbering "->" for non-trivial pointers
+vim.lsp.config('clangd', { capabilities = { textDocument = { completion = { editsNearCursor = false } } } })
+
 vim.lsp.enable('clangd')
 
 vim.api.nvim_create_autocmd('LspAttach', {
