@@ -49,10 +49,13 @@ vim.o.listchars = 'tab:» ,trail:·,nbsp:␣,lead:·'
 -- instead raise a dialog asking if you wish to save the current file(s) See `:help 'confirm'`
 vim.o.confirm = true
 
--- vim.o.foldcolumn = '1'
--- vim.o.foldlevel = 99
--- vim.o.foldmethod = 'indent'
--- vim.o.foldtext = ''
+-- TODO: learn how to use folding productively
+vim.o.foldlevel = 99
+vim.o.foldcolumn = '0'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.o.foldmethod = 'expr'
+vim.o.foldnestmax = 4
+vim.o.foldtext = ''
 
 -- vim.o.jumpoptions = 'view'
 
@@ -141,9 +144,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.bo.autocomplete = true
         vim.bo.complete = 'o,' .. vim.bo.complete
       end
-    end
-    if client:supports_method('textDocument/foldingRange') then
-      -- vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
     end
     if client.name == 'clangd' then
       vim.keymap.set("n", "gh", "<cmd>LspClangdSwitchSourceHeader<cr>", {
