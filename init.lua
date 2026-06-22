@@ -63,6 +63,9 @@ vim.o.swapfile = false
 vim.o.splitright = true
 vim.o.splitbelow = true
 
+-- Stop .mm files being loaded as filetype=nroff if first 20 lines don't contain "include" or "import"
+vim.filetype.add({ extension = { mm = 'objcpp' } })
+
 -- }}}
 
 -- Diagnostic Config & Keymaps {{{
