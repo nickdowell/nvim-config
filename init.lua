@@ -122,12 +122,16 @@ require('treesitter-context').setup()
 -- LSP {{{
 -- editsNearCursor = false to prevent completion clobbering "->" for non-trivial pointers
 vim.lsp.config('clangd', { capabilities = { textDocument = { completion = { editsNearCursor = false } } } })
-
 vim.lsp.enable('clangd')
+
+-- Allow lua_ls to resolve vim module
+vim.lsp.config('lua_ls', { settings = { Lua = { workspace = { library = vim.api.nvim_get_runtime_file("", true) } } } })
+vim.lsp.enable('lua_ls')
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client == nil then return end
     if client:supports_method('textDocument/completion') then
       vim.o.completeopt = 'menu,popup,noselect' -- autocomplete is annoying without noselect
       if true then -- use LSP-driven autocomplete, based on server-defined triggerCharacters
