@@ -141,6 +141,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method('textDocument/foldingRange') then
       -- vim.wo.foldexpr = 'v:lua.vim.lsp.foldexpr()'
     end
+    if client.name == 'clangd' then
+      vim.keymap.set("n", "gh", "<cmd>LspClangdSwitchSourceHeader<cr>", {
+        buffer = ev.buf,
+        desc = "Switch source/header",
+      })
+    end
   end,
 })
 -- }}}
