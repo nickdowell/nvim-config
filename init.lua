@@ -158,7 +158,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Telescope {{{
 require('telescope').setup({
   defaults = { layout_strategy = 'vertical' },
-  pickers = { 
+  pickers = {
     colorscheme = {
       enable_preview = true,
       previewer = false,
