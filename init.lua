@@ -285,6 +285,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 -- Copy / paste from system keyboard
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
+vim.keymap.set('n', '<leader>p', [["+p]])
 
 -- Grep for string under cursor
 vim.keymap.set('n', '<leader>gr', ':grep <C-r><C-w>')
