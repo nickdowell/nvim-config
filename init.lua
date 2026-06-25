@@ -108,7 +108,9 @@ require("arborist").setup({
   update_cadence = 'manual'
 })
 
-require('treesitter-context').setup()
+require('treesitter-context').setup({
+  multiline_threshold = 1, -- Much better for Xfer's coding style
+})
 
 -- If not using Arborist, something like this would be needed:
 -- vim.api.nvim_create_autocmd('FileType', {
