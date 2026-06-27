@@ -138,14 +138,25 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client == nil then return end
     if client:supports_method('textDocument/completion') then
-      vim.o.completeopt = 'menu,popup,noselect' -- autocomplete is annoying without noselect
-      if true then -- use LSP-driven autocomplete, based on server-defined triggerCharacters
-        vim.lsp.completion.enable(true, client.id, ev.buf, {autotrigger = true})
-        vim.keymap.set('i', '<c-space>', function() vim.lsp.completion.get() end)
-      else -- use built-in autocomplete added in 0.12
-        vim.bo.autocomplete = true
-        vim.bo.complete = 'o,' .. vim.bo.complete
-      end
+      vim.keymap.set('i', '<c-space>', vim.lsp.completion.get)
+      -- Manual completion, works nicely without noselect
+      vim.lsp.completion.enable(true, client.id, ev.buf)
+      --
+      -- neovim 0.12 autocomplete [ins-autocompletion]
+      -- Seems to have some issues with async nature of LSP results; 'autocompletedelay' and
+      -- 'autocompletetimeout' don't work, and LSP results appear at bottom of list, and o^5
+      -- does not implement the limit of 5 results for example.
+      -- It's also quite weird to have autocomplete kick in when writing comments.
+      -- vim.bo.autocomplete = true
+      -- vim.bo.complete = '.^5,w^5,b^5,u^5,o^5'
+      -- vim.bo.completeopt = 'menu,popup,noselect'
+      --
+      -- LSP-driven auto-completion [lsp-completion]
+      -- FIXME: why is this breaking i_CTRL-N e.g. when entering string literals?
+      -- local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+      -- client.server_capabilities.completionProvider.triggerCharacters = chars
+      -- vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      -- vim.bo.completeopt = 'menu,popup,noselect'
     end
     if client.name == 'clangd' then
       vim.keymap.set("n", "gh", "<cmd>LspClangdSwitchSourceHeader<cr>", {
