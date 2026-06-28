@@ -6,13 +6,16 @@ vim.pack.add({
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-treesitter/nvim-treesitter-context',
-  'https://github.com/tpope/vim-vinegar.git',
+  'https://github.com/kotarac/vim-vinegar',
   'https://tpope.io/vim/fugitive',
 })
 -- }}}
 
 -- Colorscheme {{{
 vim.cmd('colorscheme catppuccin') -- catppuccin was added to vnim 0.12!
+vim.cmd('let g:colortemplate_toolbar = 0') -- fixes colortemplate on nvim
+vim.cmd('command DarkMode set background=dark|colorscheme catppuccin')
+vim.cmd('command LightMode set background=light|colorscheme solarized8_high')
 -- }}}
 
 -- Configuration {{{
