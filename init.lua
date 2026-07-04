@@ -61,6 +61,7 @@ vim.o.foldtext = ''
 
 vim.o.signcolumn = 'yes'
 vim.o.swapfile = false
+vim.o.updatetime = 500
 
 -- Configure how new splits should be opened
 vim.o.splitright = true
@@ -133,11 +134,21 @@ vim.lsp.enable('clangd')
 vim.lsp.config('lua_ls', { settings = { Lua = { workspace = { library = vim.api.nvim_get_runtime_file("", true) } } } })
 vim.lsp.enable('lua_ls')
 
+vim.lsp.config('pylsp', {})
+vim.lsp.enable('pylsp')
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client == nil then return end
-    if client:supports_method('textDocument/completion') then
+    if client.server_capabilities.documentHighlightProvider then
+      local group = vim.api.nvim_create_augroup('LspHighlighReferences', { clear = true })
+      vim.api.nvim_create_autocmd({ 'CursorHold' },
+        { buf = ev.buf, group = group, callback = vim.lsp.buf.document_highlight })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter' },
+        { buf = ev.buf, group = group, callback = vim.lsp.buf.clear_references })
+    end
+    if client.server_capabilities.completionProvider then
       vim.keymap.set('i', '<c-space>', vim.lsp.completion.get)
       -- Manual completion, works nicely without noselect
       vim.lsp.completion.enable(true, client.id, ev.buf)
@@ -214,11 +225,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Fuzzy find all the symbols in your current document.
     -- Symbols are things like variables, functions, types, etc.
-    vim.keymap.set('n', '<leader>gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+    vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
 
     -- Fuzzy find all the symbols in your current workspace.
     -- Similar to document symbols, except searches over your entire project.
-    vim.keymap.set('n', '<leader>gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+    vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
 
     -- Jump to the type of the word under your cursor.
     -- Useful when you're not sure what type a variable is and you want to see
