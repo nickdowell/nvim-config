@@ -38,9 +38,6 @@ vim.o.relativenumber = true
 -- vim.o.ignorecase = true
 -- vim.o.smartcase = true
 
--- Highlight the line where the cursor is on
-vim.o.cursorline = true
-
 -- Apply theme colors to the terminal's cursor
 vim.o.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
 
@@ -314,6 +311,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   callback = function() vim.hl.on_yank() end
 })
+
+-- show cursorline only in active window
+vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, { callback = function() vim.opt_local.cursorline = true end })
+vim.api.nvim_create_autocmd({'WinLeave', 'BufLeave'}, { callback = function() vim.opt_local.cursorline = false end })
 -- }}}
 
 -- [[ Create user commands ]] {{{
