@@ -1,12 +1,12 @@
 -- Plug-ins {{{
 vim.pack.add({
   'https://github.com/folke/which-key.nvim',
+  'https://github.com/kotarac/vim-vinegar',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-treesitter/nvim-treesitter-context',
-  'https://github.com/kotarac/vim-vinegar',
   'https://tpope.io/vim/fugitive',
 })
 -- }}}
@@ -197,7 +197,6 @@ vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find exis
 -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
 -- If you later switch picker plugins, this is where to update these mappings.
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
   callback = function(event)
     local buf = event.buf
 
@@ -307,10 +306,7 @@ vim.keymap.set('n', '<leader>p', [["+p]])
 
 -- Highlight when yanking (copying) text.
 -- Try it with `yap` in normal mode. See `:h vim.hl.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  callback = function() vim.hl.on_yank() end
-})
+vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_yank() end })
 
 -- show cursorline only in active window
 vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, { callback = function() vim.opt_local.cursorline = true end })
@@ -332,19 +328,15 @@ vim.api.nvim_create_user_command('TransparentBG', function()
 end, {})
 -- }}}
 
--- [[ Add optional packages ]] {{{
--- Nvim comes bundled with a set of packages that are not enabled by
--- default. You can enable any of them by using the `:packadd` command.
+-- PLUGINS {{{
+--
+-- See `:h :packadd`, `:h vim.pack`
 
--- For example, to add the "nohlsearch" package to automatically turn off search highlighting after
--- 'updatetime' and when going to insert mode
+-- Add the "nohlsearch" package to automatically disable search highlighting after
+-- 'updatetime' and when going to insert mode.
+vim.cmd('packadd! cfilter') -- Filter the quickfix list using :Cfilter and :Lfilter
 vim.cmd('packadd! nohlsearch')
-
--- The "cfilter" package allows filtering the quickfix list using :Cfilter and :Lfilter
-vim.cmd('packadd! cfilter')
-
 vim.cmd('packadd! nvim.difftool')
-
 vim.cmd('packadd! nvim.undotree')
 
 -- }}}
