@@ -360,6 +360,9 @@ vim.cmd('packadd! nohlsearch')
 vim.cmd('packadd! nvim.difftool')
 vim.cmd('packadd! nvim.undotree')
 
+vim.g.colortemplate_toolbar = 0
+vim.g.fugitive_legacy_commands = false
+
 -- }}}
 
 -- vim: foldmethod=marker expandtab softtabstop=2 shiftwidth=2 tabstop=2
