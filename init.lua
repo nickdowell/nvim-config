@@ -150,6 +150,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     if client.server_capabilities.completionProvider then
       vim.keymap.set('i', '<c-space>', vim.lsp.completion.get)
+      vim.keymap.set('i', '<C-]>', vim.lsp.completion.get)
       -- Manual completion, works nicely without noselect
       vim.lsp.completion.enable(true, client.id, ev.buf)
       --
@@ -310,6 +311,14 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 vim.keymap.set('n', '<leader>p', [["+p]])
+
+-- Make <Tab> cycle through insert-mode completion items, <CR> always select
+-- https://vimtricks.wiki/posts/pumvisible-smart-completion-map
+vim.cmd([[
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
+]])
 
 -- }}}
 
