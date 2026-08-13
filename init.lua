@@ -82,7 +82,7 @@ vim.diagnostic.config {
   underline = { severity = { min = vim.diagnostic.severity.WARN } },
 
   -- Can switch between these as you prefer
-  virtual_text = true, -- Text shows up at the end of the line
+  virtual_text = true,   -- Text shows up at the end of the line
   virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 
   -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
@@ -103,7 +103,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- Treesitter {{{
 -- Arborist installs treesitter queries so that TS syntax higlighting works
 -- It also installs new parsers on demand when opening files
-vim.pack.add({'https://github.com/arborist-ts/arborist.nvim'})
+vim.pack.add({ 'https://github.com/arborist-ts/arborist.nvim' })
 require("arborist").setup({
   install_popular = false,
   prefer_wasm = false,
@@ -118,7 +118,7 @@ require('treesitter-context').setup({
 -- vim.api.nvim_create_autocmd('FileType', {
 --   callback = function(ev)
 --     local language = vim.treesitter.language.get_lang(ev.match)
---     if vim.treesitter.language.add(language) then 
+--     if vim.treesitter.language.add(language) then
 --       -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 --       -- vim.wo.foldmethod = 'expr'
 --     end
@@ -190,8 +190,8 @@ require('telescope').setup({
       previewer = false,
       theme = 'dropdown'
     },
-    lsp_document_symbols = {symbol_width = 50},
-    lsp_dynamic_workspace_symbols = {symbol_width = 50},
+    lsp_document_symbols = { symbol_width = 50 },
+    lsp_dynamic_workspace_symbols = { symbol_width = 50 },
   }
 })
 local builtin = require('telescope.builtin')
@@ -264,15 +264,24 @@ vim.keymap.set(
 )
 
 -- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+vim.keymap.set('n', '<leader>sn',
+  function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
+  { desc = '[S]earch [N]eovim files' })
 -- }}}
 
 -- Gitsigns {{{
 local gitsigns = require('gitsigns')
 gitsigns.setup({
   on_attach = function()
-    vim.keymap.set('n', ']c', function() if vim.wo.diff then vim.cmd.normal({']c', bang = true}) else gitsigns.nav_hunk('next') end end)
-    vim.keymap.set('n', '[c', function() if vim.wo.diff then vim.cmd.normal({'[c', bang = true}) else gitsigns.nav_hunk('prev') end end)
+    local function nav(lhs, direction)
+      if vim.wo.diff then
+        vim.cmd.normal({ lhs, bang = true })
+      else
+        gitsigns.nav_hunk(direction)
+      end
+    end
+    vim.keymap.set('n', ']c', function() nav(']c', 'next') end)
+    vim.keymap.set('n', '[c', function() nav('[c', 'prev') end)
   end
 })
 -- }}}
@@ -332,8 +341,8 @@ vim.cmd([[
 vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_yank() end })
 
 -- show cursorline only in active window
-vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, { callback = function() vim.opt_local.cursorline = true end })
-vim.api.nvim_create_autocmd({'WinLeave', 'BufLeave'}, { callback = function() vim.opt_local.cursorline = false end })
+vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, { callback = function() vim.opt_local.cursorline = true end })
+vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave' }, { callback = function() vim.opt_local.cursorline = false end })
 -- }}}
 
 -- [[ Create user commands ]] {{{
@@ -346,9 +355,7 @@ vim.api.nvim_create_autocmd({'WinLeave', 'BufLeave'}, { callback = function() vi
 --   print(vim.fn.system({ 'git', 'blame', '-L', line_number .. ',+1', filename }))
 -- end, { desc = 'Print the git blame for the current line' })
 
-vim.api.nvim_create_user_command('TransparentBG', function()
-  vim.cmd(':highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE')
-end, {})
+vim.api.nvim_create_user_command('TransparentBG', 'highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE', {})
 -- }}}
 
 -- PLUGINS {{{
