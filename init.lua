@@ -309,9 +309,10 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Copy / paste from system keyboard
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
-vim.keymap.set('n', '<leader>Y', [["+Y]])
-vim.keymap.set('n', '<leader>p', [["+p]])
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d')
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y')
+vim.keymap.set('n', '<leader>Y', '"+Y')
+vim.keymap.set('n', '<leader>p', '"+p')
 
 -- Make <Tab> cycle through insert-mode completion items, <CR> always select
 -- https://vimtricks.wiki/posts/pumvisible-smart-completion-map
