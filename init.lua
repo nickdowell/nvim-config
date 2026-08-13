@@ -62,6 +62,7 @@ vim.o.foldtext = ''
 vim.o.signcolumn = 'yes'
 vim.o.swapfile = false
 vim.o.updatetime = 500
+vim.o.winborder = 'rounded'
 
 -- Configure how new splits should be opened
 vim.o.splitright = true
