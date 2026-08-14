@@ -171,6 +171,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       -- vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
       -- vim.bo.completeopt = 'menu,popup,noselect'
     end
+    if client.server_capabilities.documentFormattingProvider then
+      vim.keymap.set('n', '<leader>gq', vim.lsp.buf.format, { desc = 'Format document' })
+    end
     if client.name == 'clangd' then
       vim.keymap.set("n", "gh", "<cmd>LspClangdSwitchSourceHeader<cr>", {
         buffer = ev.buf,
