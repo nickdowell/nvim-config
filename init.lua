@@ -291,12 +291,6 @@ gitsigns.setup({
 
 -- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes` {{{
 
--- Allow entering these keys when using Ghostty with macos-option-as-alt = true
-if vim.env.TERM == 'xterm-ghostty' and vim.fn.has('maxunix') then
-  vim.keymap.set('i', '<M-2>', '€')
-  vim.keymap.set('i', '<M-3>', '#')
-end
-
 -- Use <Esc> to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-[>', '<C-\\><C-n>')
