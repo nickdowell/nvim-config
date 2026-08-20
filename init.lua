@@ -61,15 +61,16 @@ vim.o.foldtext = ''
 
 vim.o.signcolumn = 'yes'
 vim.o.swapfile = false
-vim.o.updatetime = 500
 vim.o.winborder = 'rounded'
 
 -- Configure how new splits should be opened
-vim.o.splitright = true
-vim.o.splitbelow = true
+-- vim.o.splitright = true
+-- vim.o.splitbelow = true
 
 -- Stop .mm files being loaded as filetype=nroff if first 20 lines don't contain "include" or "import"
 vim.filetype.add({ extension = { mm = 'objcpp' } })
+
+require('vim._core.ui2').enable()
 
 -- }}}
 
