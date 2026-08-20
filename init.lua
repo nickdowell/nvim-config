@@ -144,9 +144,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client == nil then return end
     if client.server_capabilities.documentHighlightProvider then
+      vim.keymap.set('n', '<leader>h', vim.lsp.buf.document_highlight)
       local group = vim.api.nvim_create_augroup('LspHighlighReferences', { clear = true })
-      vim.api.nvim_create_autocmd({ 'CursorHold' },
-        { buf = ev.buf, group = group, callback = vim.lsp.buf.document_highlight })
+      -- vim.api.nvim_create_autocmd({ 'CursorHold' },
+      --   { buf = ev.buf, group = group, callback = vim.lsp.buf.document_highlight })
       vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter' },
         { buf = ev.buf, group = group, callback = vim.lsp.buf.clear_references })
     end
