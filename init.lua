@@ -6,6 +6,7 @@ vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
+  'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/nvim-treesitter/nvim-treesitter-context',
   'https://tpope.io/vim/fugitive',
 })
@@ -104,27 +105,26 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- Treesitter {{{
 -- Arborist installs treesitter queries so that TS syntax higlighting works
 -- It also installs new parsers on demand when opening files
-vim.pack.add({ 'https://github.com/arborist-ts/arborist.nvim' })
-require("arborist").setup({
-  install_popular = false,
-  prefer_wasm = false,
-  update_cadence = 'manual'
+-- vim.pack.add({ 'https://github.com/arborist-ts/arborist.nvim' })
+-- require("arborist").setup({
+--   install_popular = false,
+--   prefer_wasm = false,
+--   update_cadence = 'manual'
+-- })
+
+require('nvim-treesitter').install({ 'cmake', 'cpp', 'json', 'lua', 'make', 'markdown', 'objc', 'python' })
+
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(ev)
+    if pcall(vim.treesitter.start) then
+      vim.bo[ev.buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+    end
+  end,
 })
 
 require('treesitter-context').setup({
   multiline_threshold = 1, -- Much better for Xfer's coding style
 })
-
--- If not using Arborist, something like this would be needed:
--- vim.api.nvim_create_autocmd('FileType', {
---   callback = function(ev)
---     local language = vim.treesitter.language.get_lang(ev.match)
---     if vim.treesitter.language.add(language) then
---       -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
---       -- vim.wo.foldmethod = 'expr'
---     end
---   end
--- })
 -- }}}
 
 -- LSP {{{
