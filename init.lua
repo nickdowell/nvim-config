@@ -117,7 +117,7 @@ require('nvim-treesitter').install({ 'cmake', 'cpp', 'json', 'lua', 'make', 'mar
 vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
     if pcall(vim.treesitter.start) then
-      vim.bo[ev.buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end
   end,
 })
