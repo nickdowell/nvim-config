@@ -127,7 +127,9 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 require('treesitter-context').setup({
+  max_lines = 10,
   multiline_threshold = 1, -- Much better for Xfer's coding style
+  trim_scope = 'inner',
 })
 -- }}}
 
