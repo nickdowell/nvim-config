@@ -73,7 +73,7 @@ vim.o.winborder = 'rounded'
 -- vim.o.splitbelow = true
 
 -- Stop .mm files being loaded as filetype=nroff if first 20 lines don't contain "include" or "import"
-vim.filetype.add({ extension = { mm = 'objcpp' } })
+vim.filetype.add({ extension = { mm = 'objcpp', uidesc = 'json' }})
 
 require('vim._core.ui2').enable()
 
