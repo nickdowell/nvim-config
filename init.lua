@@ -50,6 +50,10 @@ vim.o.listchars = 'tab:» ,trail:·,nbsp:␣,lead:·'
 -- instead raise a dialog asking if you wish to save the current file(s) See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.o.completeopt = 'menuone,popup' -- menuone fixes clangd completion snippet insertion
+vim.o.pumborder = 'rounded'
+vim.o.winborder = 'rounded'
+
 -- TODO: learn how to use folding productively
 vim.o.foldlevel = 99
 vim.o.foldcolumn = '0'
@@ -322,13 +326,6 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y')
 vim.keymap.set('n', '<leader>Y', '"+Y')
 vim.keymap.set('n', '<leader>p', '"+p')
 
--- Make <Tab> cycle through insert-mode completion items, <CR> always select
--- https://vimtricks.wiki/posts/pumvisible-smart-completion-map
-vim.cmd([[
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
-]])
 
 -- }}}
 
