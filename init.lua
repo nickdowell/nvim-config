@@ -158,8 +158,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         { buf = ev.buf, group = group, callback = vim.lsp.buf.clear_references })
     end
     if client.server_capabilities.completionProvider then
-      vim.keymap.set('i', '<c-space>', vim.lsp.completion.get)
-      vim.keymap.set('i', '<C-]>', vim.lsp.completion.get)
+      vim.keymap.set('i', '<C-Space>', vim.lsp.completion.get)
+      vim.keymap.set('i', '<C-l>', vim.lsp.completion.get)
       -- Manual completion, works nicely without noselect
       vim.lsp.completion.enable(true, client.id, ev.buf)
       --
