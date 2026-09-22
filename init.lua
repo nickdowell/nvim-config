@@ -341,6 +341,18 @@ vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_ya
 -- show cursorline only in active window
 vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, { callback = function() vim.opt_local.cursorline = true end })
 vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave' }, { callback = function() vim.opt_local.cursorline = false end })
+
+-- Adjust listchars to hide "correct" leading spaces or tabs
+-- BUGS: this changes the main window when showing which-key window
+vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'OptionSet' }, {
+  callback = function()
+    if vim.bo.expandtab then
+      vim.wo.listchars = 'tab:» ,trail:·,nbsp:␣,lead: '
+    else
+      vim.wo.listchars = 'tab:  ,trail:·,nbsp:␣,lead:·'
+    end
+  end
+})
 -- }}}
 
 -- [[ Create user commands ]] {{{
