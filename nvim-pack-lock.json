@@ -4,6 +4,10 @@
       "rev": "b902c73fabefc13583bfc0c18b28950ea8f6244f",
       "src": "https://github.com/dchinmay2/alabaster.nvim"
     },
+    "arborist.nvim": {
+      "rev": "fdeef56c2840c6772b9f68c5774ed87e9340ec7d",
+      "src": "https://github.com/arborist-ts/arborist.nvim"
+    },
     "fugitive": {
       "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
       "src": "https://tpope.io/vim/fugitive"
