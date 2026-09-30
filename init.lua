@@ -62,7 +62,6 @@ vim.o.foldlevel = 99
 vim.o.foldcolumn = '0'
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldmethod = 'expr'
-vim.o.foldnestmax = 4
 vim.o.foldtext = ''
 
 -- vim.o.jumpoptions = 'view'
