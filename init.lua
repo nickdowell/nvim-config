@@ -9,14 +9,17 @@ vim.pack.add({
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/nvim-treesitter/nvim-treesitter-context',
   'https://tpope.io/vim/fugitive',
+  -- colorschemes
+  'https://github.com/dchinmay2/alabaster.nvim',
+  'https://github.com/folke/tokyonight.nvim',
+  'https://github.com/morhetz/gruvbox',
+  'https://github.com/vague-theme/vague.nvim',
+  'https://github.com/vinitkumar/monokai-pro-vim',
 })
 -- }}}
 
 -- Colorscheme {{{
-vim.cmd('colorscheme catppuccin') -- catppuccin was added to vnim 0.12!
-vim.cmd('let g:colortemplate_toolbar = 0') -- fixes colortemplate on nvim
-vim.cmd('command DarkMode set background=dark|colorscheme catppuccin')
-vim.cmd('command LightMode set background=light|colorscheme solarized8_high')
+vim.cmd.colorscheme('monokai-pro')
 -- }}}
 
 -- Configuration {{{
