@@ -75,7 +75,7 @@ vim.o.winborder = 'rounded'
 -- vim.o.splitbelow = true
 
 -- Stop .mm files being loaded as filetype=nroff if first 20 lines don't contain "include" or "import"
-vim.filetype.add({ extension = { mm = 'objcpp', uidesc = 'json' }})
+vim.filetype.add({ extension = { mm = 'objcpp', uidesc = 'json' } })
 
 require('vim._core.ui2').enable()
 
@@ -207,6 +207,7 @@ require('telescope').setup({
     lsp_dynamic_workspace_symbols = { symbol_width = 50 },
   }
 })
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -253,33 +254,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Override default behavior and theme when searching
 vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({ winblend = 10, previewer = false }))
 end, { desc = '[/] Fuzzily search in current buffer' })
 
--- It's also possible to pass additional configuration options.
---  See `:help telescope.builtin.live_grep()` for information about particular keys
-vim.keymap.set(
-  'n',
-  '<leader>s/',
-  function()
-    builtin.live_grep {
-      grep_open_files = true,
-      prompt_title = 'Live Grep in Open Files',
-    }
-  end,
-  { desc = '[S]earch [/] in Open Files' }
-)
+vim.keymap.set('n', '<leader>s/', function()
+  builtin.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files', })
+end, { desc = '[S]earch [/] in Open Files' })
 
--- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sn',
-  function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
-  { desc = '[S]earch [N]eovim files' })
+vim.keymap.set('n', '<leader>sn', function()
+  builtin.find_files({ cwd = vim.fn.stdpath 'config' })
+end, { desc = '[S]earch [N]eovim files' })
 -- }}}
 
 -- Gitsigns {{{
